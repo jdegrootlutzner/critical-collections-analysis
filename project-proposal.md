@@ -86,6 +86,15 @@ Week 8 - Dec. 17
  * Wrap up loose ends.
 
 ## Expected Background Materials
-Pilot Project (http://madelynndickerson.wixsite.com/dh4collections)
+* Pilot Project (http://madelynndickerson.wixsite.com/dh4collections)
 
-The [original dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1.xlsx), the [original "cleaned" dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1%20clean-c.xlsx), the original [cleaning instructions](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/DH%20Project%202016%20Data%20Clean%20Up%20Instructions.docx), and the original [grant proposal](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Collections%20as%20Data%20Sontag%20Grant%20App%202017.docx) are attached in the Github Document.
+* The [original dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1.xlsx), the [original "cleaned" dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1%20clean-c.xlsx), the original [cleaning instructions](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/DH%20Project%202016%20Data%20Clean%20Up%20Instructions.docx), and the original [grant proposal](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Collections%20as%20Data%20Sontag%20Grant%20App%202017.docx) are attached in the Github Document.
+
+* [Algorithmic Bias in Library Discovery Systems](https://matthew.reidsrow.com/articles/173), Matthew Reidsma, March 11, 2016 
+
+* [Chapter 11 - Wake Up and Smell the Bias](https://gotaminute.pressbooks.com/), Got a Minute? Instruction Tune-up for time pressed librarians, Paul Worrell
+
+* Annotated Bibliographies - Georgia State University
+  * [Personal Bias in Library Collections and Services](http://scholarworks.gsu.edu/cgi/viewcontent.cgi?article=1017&context=univ_lib_facpub), June 2004
+  * [An Annotated Bibliography on Bias in Library Services and Collections](http://scholarworks.gsu.edu/cgi/viewcontent.cgi?article=1116&context=univ_lib_facpub), Winter 2013
+

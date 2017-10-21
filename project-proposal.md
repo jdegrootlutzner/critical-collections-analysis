@@ -61,8 +61,31 @@ R
 IBM Watson
 
 ## Project Schedule
+Week 1 - Oct. 29
+ * Meet with librarians to go over project. Work on API.
+
+Week 2 - Nov. 5
+ * Finish API by end of week.
+  
+Week 3 - Nov. 12
+ * Work on XML editing.
+ 
+Week 4 - Nov. 19
+ * Finish XML editing.  Work on analysis comparing data to other libraries.
+
+Week 5 - Nov. 26
+ * Finish quantitative comparison.
+
+Week 6 - Dec. 3
+ * Text analysis.
+
+Week 7 - Dec. 10
+ * Finish text analysis.
+
+Week 8 - Dec. 17
+ * Wrap up loose ends.
 
 ## Expected Background Materials
 Pilot Project (http://madelynndickerson.wixsite.com/dh4collections)
 
-The [original dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1.xlsx), the [original "cleaned" dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1%20clean-c.xlsx), [cleaning instructions](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/DH%20Project%202016%20Data%20Clean%20Up%20Instructions.docx), and [grant proposal](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Collections%20as%20Data%20Sontag%20Grant%20App%202017.docx) are attached in the Github Document.
+The [original dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1.xlsx), the [original "cleaned" dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1%20clean-c.xlsx), the original [cleaning instructions](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/DH%20Project%202016%20Data%20Clean%20Up%20Instructions.docx), and the original [grant proposal](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Collections%20as%20Data%20Sontag%20Grant%20App%202017.docx) are attached in the Github Document.

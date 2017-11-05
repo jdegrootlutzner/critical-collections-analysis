@@ -20,7 +20,7 @@ Libraries are flexible spaces that allow people to explore an inclusive range of
 Much of Big Data is often the process of cleaning and wrangling data. The library's current dataset is unworkably dirty since it comes from two databases, one of which is outdated. Much of the libraries work on the pilot project involved **manually** cleaning the dataset. We will first clean the dataset by using an API to retrieve clean information about all of the recorded books. We will then quantify the amount of books on a given topic and compare it to the amount of books on the same topic at a different liberal arts college's library. Our high reach goal for this semester is to use text analysis on excerpts of books from a specific topic to analyze the bias, if any, of the collection at the Claremont Colleges Library.
 
 ## Description of Dataset
-![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/original-data-screenshot.png)
+![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/OriginalFiles/original-data-screenshot.png)
 
 The dataset has several variables and only a few will be of interest to us including:
 

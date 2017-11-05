@@ -3,7 +3,7 @@
 
 *Team Members:* Julian DeGroot-Lutzner, Sydney Smith, Corbin Bethurem, Julia Seacat
 
-## Background & Motivation 
+## Background & Motivation
 *What is the problem you are solving?
 What is the goal of this project?
 Why is your project important?
@@ -15,14 +15,15 @@ Madelynn Dickerson, the information resources coordinator at the Claremont Colle
 
 The pilot project is where our project begins. But first, why is a project like the Critical Collection Analysis project important?
 
-Libraries are flexible spaces that allow people to explore an inclusive range of resources. As such, it is important for a library to have diverse perspectives on an issue so people can create well-rounded opinions. Curators of libraries decide what information is available for its attendants. uman bias is inherent and unavoidable in the resource acquisition process. The project provides an easily executable way to examine possible biases in library collections. Once aggregated and accessible in a database, users can compare the collections of a library to those of other libraries. Additionally, librarians can use text analysis to find to analyze the sentiment and perspective towards a specific topic. Text analysis has its limitations; it is reductivist in the sense that it simplifies an author’s argument, and it is also limited by the human bias of the software developer. However simple, our project is important because text analysis would provide a way to analyze the bias of large library collections quickly and with little effort. 
+Libraries are flexible spaces that allow people to explore an inclusive range of resources. As such, it is important for a library to have diverse perspectives on an issue so people can create well-rounded opinions. Curators of libraries decide what information is available for its attendants. uman bias is inherent and unavoidable in the resource acquisition process. The project provides an easily executable way to examine possible biases in library collections. Once aggregated and accessible in a database, users can compare the collections of a library to those of other libraries. Additionally, librarians can use text analysis to find to analyze the sentiment and perspective towards a specific topic. Text analysis has its limitations; it is reductivist in the sense that it simplifies an author’s argument, and it is also limited by the human bias of the software developer. However simple, our project is important because text analysis would provide a way to analyze the bias of large library collections quickly and with little effort.
 
 Much of Big Data is often the process of cleaning and wrangling data. The library's current dataset is unworkably dirty since it comes from two databases, one of which is outdated. Much of the libraries work on the pilot project involved **manually** cleaning the dataset. We will first clean the dataset by using an API to retrieve clean information about all of the recorded books. We will then quantify the amount of books on a given topic and compare it to the amount of books on the same topic at a different liberal arts college's library. Our high reach goal for this semester is to use text analysis on excerpts of books from a specific topic to analyze the bias, if any, of the collection at the Claremont Colleges Library.
 
 ## Description of Dataset
+<<<<<<< HEAD
 OriginalFiles/
 
-![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/original-data-screenshot.png)
+![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/OriginalFiles/original-data-screenshot.png)
 
 The dataset has several variables and only a few will be of interest to us including:
 
@@ -47,7 +48,7 @@ Our first step will be to clean the dataset. We will use the book record fields 
 
 Our next step will be to analyze the collection from a quantitative perspective. For example, how many books does the library have on a specific topic? How does this compare with how many books another library has on the same topic or all books published on the topic? To do this we will need to write more code to handle the API and return information on topics. We will use R to visualize and interpret the data.
 
-Our next goal is to use text analysis to analyze the sentiment of books from a certain topic. We are not sure what the specifics of the text analysis are yet. We will compare the text analysis of the books in our library to that of other libraries. 
+Our next goal is to use text analysis to analyze the sentiment of books from a certain topic. We are not sure what the specifics of the text analysis are yet. We will compare the text analysis of the books in our library to that of other libraries.
 
 We may also try to create a website in order to host and allow people to interact with the database.
 
@@ -68,10 +69,10 @@ Week 1 - Oct. 29
 
 Week 2 - Nov. 5
  * Finish API by end of week.
-  
+
 Week 3 - Nov. 12
  * Work on XML editing.
- 
+
 Week 4 - Nov. 19
  * Finish XML editing.  Work on analysis comparing data to other libraries.
 
@@ -92,11 +93,10 @@ Week 8 - Dec. 17
 
 * The [original dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1.xlsx), the [original "cleaned" dataset](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/7-2013%3D6-2014_books-1%20clean-c.xlsx), the original [cleaning instructions](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/DH%20Project%202016%20Data%20Clean%20Up%20Instructions.docx), and the original [grant proposal](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Collections%20as%20Data%20Sontag%20Grant%20App%202017.docx) are attached in the Github Document.
 
-* [Algorithmic Bias in Library Discovery Systems](https://matthew.reidsrow.com/articles/173), Matthew Reidsma, March 11, 2016 
+* [Algorithmic Bias in Library Discovery Systems](https://matthew.reidsrow.com/articles/173), Matthew Reidsma, March 11, 2016
 
 * [Chapter 11 - Wake Up and Smell the Bias](https://gotaminute.pressbooks.com/), Got a Minute? Instruction Tune-up for time pressed librarians, Paul Worrell
 
 * Annotated Bibliographies - Georgia State University
   * [Personal Bias in Library Collections and Services](http://scholarworks.gsu.edu/cgi/viewcontent.cgi?article=1017&context=univ_lib_facpub), June 2004
   * [An Annotated Bibliography on Bias in Library Services and Collections](http://scholarworks.gsu.edu/cgi/viewcontent.cgi?article=1116&context=univ_lib_facpub), Winter 2013
-

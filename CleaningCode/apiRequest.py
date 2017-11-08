@@ -1,4 +1,5 @@
 import requests, csv
+from sets import Set
 from marcxml_parser import MARCXMLRecord
 
 """
@@ -28,22 +29,28 @@ def requestOCLC( OCLC ):
     return response
 
 def helper(array): #puts author into the correct format for our csv output 
-    text = " "
+    text = Set()
     for a in array:
         author = str(a)
         author = author.replace("Person(name=", '')
         author = author.replace(', second_name=', '')
         author = author.replace(", surname=", '')
         author = author.replace(", title=", '')
-        author = author.replace("[", '')
-        author = author.replace(")", '')
-        author = author.replace('"', '')
-        author = author.replace("'", '')
-        author = author.replace("]", '')
-        author = author.replace(",", ' ')
-        author = author.replace(".", ' ')
-        text = text + author + ", "
-    return text
+        text.add(author)
+    author = str(list(text))
+    #author = author.replace('["'''''''')",','')
+    author = author.replace(",", ' ')
+    author = author.replace('",',' ')
+    author = author.replace('"', '')
+    author = author.replace("'", '')
+    author = author.replace("[)", '')
+    author = author.replace("[", '')
+    author = author.replace(")]", '')
+    author = author.replace("]", '')
+    author = author.replace(".", ' ')
+    author = author.replace(")", ',')
+    print (author)
+    return author
 
 # Possible format for final file
 # OCLC, title, authors, publication date, publisher, type (book, movie, etc.), ISBN (from original document), Subject[s], Sub-subject?,

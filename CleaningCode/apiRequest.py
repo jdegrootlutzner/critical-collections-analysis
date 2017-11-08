@@ -27,6 +27,24 @@ def requestOCLC( OCLC ):
                             OCLC + "?wskey=" + wskey)
     return response
 
+def helper(array): #puts author into the correct format for our csv output 
+    text = " "
+    for a in array:
+        author = str(a)
+        author = author.replace("Person(name=", '')
+        author = author.replace(', second_name=', '')
+        author = author.replace(", surname=", '')
+        author = author.replace(", title=", '')
+        author = author.replace("[", '')
+        author = author.replace(")", '')
+        author = author.replace('"', '')
+        author = author.replace("'", '')
+        author = author.replace("]", '')
+        author = author.replace(",", ' ')
+        author = author.replace(".", ' ')
+        text = text + author + ", "
+    return text
+
 # Possible format for final file
 # OCLC, title, authors, publication date, publisher, type (book, movie, etc.), ISBN (from original document), Subject[s], Sub-subject?,
 def createRow( OCLC , api_response ):
@@ -35,13 +53,16 @@ def createRow( OCLC , api_response ):
     empty spot in the array. '''
     # parse api_response
     record = MARCXMLRecord(api_response.text.encode('UTF-8'))
+    #print(record)
 
     row = [OCLC] #i nitialize list with just OCLC number
     row.append(record.get_name()) # add title
+    row.append(helper(record.get_authors())) #add authors
     # TODO: add authors - this needs a helper function bc authors are currently
     # returned as an array
     row.append(record.get_pub_date()) # add publishing date
     row.append(record.get_publisher()) # add publisher
+    row.append(helper(record.get_subfields("520", "a", i1=" ", i2=" ", exception=False))) #add summary 
     return row
 
 def main():
@@ -84,6 +105,7 @@ def main():
     input_file.close()
     output_file.close()
     rejects_file.close()
+ 
 
 def test_parsing_calls():
     ''' This function shows an example of what each highlevel getter returns

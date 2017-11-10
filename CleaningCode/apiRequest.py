@@ -28,7 +28,7 @@ def requestOCLC( OCLC ):
                             OCLC + "?wskey=" + wskey)
     return response
 
-def helper(array): #puts author into the correct format for our csv output 
+def helper(array): #puts author into the correct format for our csv output
     text = Set()
     for a in array:
         author = str(a)
@@ -112,7 +112,7 @@ def main():
     input_file.close()
     output_file.close()
     rejects_file.close()
- 
+
 
 def test_parsing_calls():
     ''' This function shows an example of what each highlevel getter returns

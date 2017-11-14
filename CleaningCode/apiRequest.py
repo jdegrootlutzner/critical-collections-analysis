@@ -38,6 +38,8 @@ def searchForOCLC( line ):
         return 0 # return 0 if the request does not work
     root = ET.fromstring(request.text.encode('UTF-8'))
     print(root)
+    for child in root:
+        print(child.tag, child.attrib)
 
 
 def requestOCLC( OCLC ):

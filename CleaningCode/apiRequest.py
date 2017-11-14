@@ -69,12 +69,12 @@ def createRow( OCLC , api_response ):
     # returned as an array
     row.append(record.get_pub_date()) # add publishing date
     row.append(record.get_publisher()) # add publisher
-    row.append(helper(record.get_subfields("520", "a", i1=" ", i2=" ", exception=False))) #add summary 
+    row.append(helper(record.get_subfields("520", "a", i1=" ", i2=" ", exception=False))) #add summary
     return row
 
 def main():
     # load in csv file with OCLC
-    input_file = open('sampleOCLC.csv', 'r')
+    input_file = open('sampleInput.csv', 'r')
     csv_input_file = csv.reader(input_file)
     # TODO: could use 'csv.DictReader' instead of 'csv.reader', then we can call
     # on data by column name, so by OCLC, ISBN, title, etc.
@@ -100,8 +100,9 @@ def main():
     the given title? For example, what if the given OCLC number is a different
     book than what is currently stored in the title and author spot.
     '''
+    csv_input_file.next() #skip header
     for line in csv_input_file:
-        OCLC_number = line[0]
+        OCLC_number = line[1]
         result = requestOCLC(OCLC_number)
         if(result.status_code == 200): # returns 200 if the request worked
             csv_output_writer.writerow(createRow(OCLC_number, result))

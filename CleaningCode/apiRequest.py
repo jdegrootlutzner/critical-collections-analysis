@@ -1,6 +1,7 @@
 import requests, csv
 from sets import Set
 from marcxml_parser import MARCXMLRecord
+import xml.etree.ElementTree as ET
 
 """
 TODO:
@@ -18,6 +19,26 @@ TODO:
         - Helper function for type of entry (book, movie, etc.)
         - The formats aren't all the same! We might have to parse them more?
 """
+def requestTitle( title ):
+    """ Returns the response from the API given the title """
+    # key for permission
+    wskey = "vA6NzAaEVpE2Vt3Yh8Bl6wxJc2CKXCrmupTTEdFt2Ezo0lLqnzX9DxjZzhJnhQWps3VwuieCA8T5orBf"
+    # call request using
+    response = requests.get("http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=" +
+                            title + "&wskey=" + wskey)
+    return response
+
+
+def searchForOCLC( line ):
+    """" Uses the other information in the entry to try and return the OCLC,
+    if this fails return something that will tell me to write to rejects"""
+    title = line[3]
+    request = requestTitle(title)
+    if(request.status_code != 200):
+        return 0 # return 0 if the request does not work
+    root = ET.fromstring(request.text.encode('UTF-8'))
+    print(root)
+
 
 def requestOCLC( OCLC ):
     """ Returns the response from the API given the OCLC """
@@ -103,6 +124,8 @@ def main():
     csv_input_file.next() #skip header
     for line in csv_input_file:
         OCLC_number = line[1]
+        if(OCLC_number == ""):
+            OCLC_number = searchForOCLC(line)
         result = requestOCLC(OCLC_number)
         if(result.status_code == 200): # returns 200 if the request worked
             csv_output_writer.writerow(createRow(OCLC_number, result))
@@ -142,4 +165,10 @@ def test_parsing_calls():
     print(record.get_binding())
     print(record.get_originals())
 
-main()
+def testingTitle():
+    sampleLine = ["","","","The unwinding: an inner history of the new America"]
+    searchForOCLC(sampleLine)
+
+#main()
+
+testingTitle()

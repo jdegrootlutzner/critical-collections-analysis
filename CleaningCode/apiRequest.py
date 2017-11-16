@@ -36,10 +36,15 @@ def searchForOCLC( line ):
     if(request.status_code != 200):
         return 0 # return 0 if the request does not work
     text = request.text.encode('UTF-8')
-    oclcStringLocater = "oclcterms:recordIdentifier"
-    index = text.split(oclcStringLocater, 2)
-    if(index > 1):
+    #print(text)
+    oclcStringLocater = "<oclcterms:recordIdentifier>"
+    index = text.split(oclcStringLocater, 1)
+    if(len(index) > 1):
+        print(len(index))
+        print("  ")
         oclc = index[1][1:-2]
+        oclc = oclc.split("<",1)
+        oclc = oclc[0]
     else:
         oclc = 0 #return 0 if the oclc is not found
     return oclc
@@ -75,7 +80,6 @@ def helper(array): #puts author into the correct format for our csv output
     author = author.replace("]", '')
     author = author.replace(".", ' ')
     author = author.replace(")", ',')
-    print (author)
     return author
 
 # Possible format for final file
@@ -87,7 +91,6 @@ def createRow( OCLC , api_response ):
     # parse api_response
     record = MARCXMLRecord(api_response.text.encode('UTF-8'))
     #print(record)
-
     row = [OCLC] #i nitialize list with just OCLC number
     row.append(record.get_name()) # add title
     row.append(helper(record.get_authors())) #add authors
@@ -95,6 +98,7 @@ def createRow( OCLC , api_response ):
     # returned as an array
     row.append(record.get_pub_date()) # add publishing date
     row.append(record.get_publisher()) # add publisher
+    row.append(helper(record.get_subfields("655", "a", i1=" ", i2="7", exception=False))) #add genre
     row.append(helper(record.get_subfields("520", "a", i1=" ", i2=" ", exception=False))) #add summary
     return row
 
@@ -131,11 +135,13 @@ def main():
         OCLC_number = line[1]
         if(OCLC_number == ""):
             OCLC_number = searchForOCLC(line)
-        #if(OCLC_number == "0")
-        result = requestOCLC(OCLC_number)
-        if(result.status_code == 200): # returns 200 if the request worked
+        if(OCLC_number == 0):
+            csv_rejects_writer.writerow([OCLC_number])
+        else:     
+         result = requestOCLC(OCLC_number)
+         if(result.status_code == 200): # returns 200 if the request worked
             csv_output_writer.writerow(createRow(OCLC_number, result))
-        else: # if the request returned a different status message
+         else: # if the request returned a different status message
             csv_rejects_writer.writerow([OCLC_number])
 
     # close files

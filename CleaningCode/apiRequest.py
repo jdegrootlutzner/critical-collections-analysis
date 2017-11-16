@@ -1,7 +1,6 @@
 import requests, csv
 from sets import Set
 from marcxml_parser import MARCXMLRecord
-import xml.etree.ElementTree as ET
 
 """
 TODO:
@@ -36,10 +35,14 @@ def searchForOCLC( line ):
     request = requestTitle(title)
     if(request.status_code != 200):
         return 0 # return 0 if the request does not work
-    root = ET.fromstring(request.text.encode('UTF-8'))
-    print(root)
-    for child in root:
-        print(child.tag, child.attrib)
+    text = request.text.encode('UTF-8')
+    oclcStringLocater = "oclcterms:recordIdentifier"
+    index = text.split(oclcStringLocater, 2)
+    if(index > 1):
+        oclc = index[1][1:-2]
+    else:
+        oclc = 0 #return 0 if the oclc is not found
+    return oclc
 
 
 def requestOCLC( OCLC ):
@@ -128,6 +131,7 @@ def main():
         OCLC_number = line[1]
         if(OCLC_number == ""):
             OCLC_number = searchForOCLC(line)
+        #if(OCLC_number == "0")
         result = requestOCLC(OCLC_number)
         if(result.status_code == 200): # returns 200 if the request worked
             csv_output_writer.writerow(createRow(OCLC_number, result))
@@ -171,6 +175,4 @@ def testingTitle():
     sampleLine = ["","","","The unwinding: an inner history of the new America"]
     searchForOCLC(sampleLine)
 
-#main()
-
-testingTitle()
+main()

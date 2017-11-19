@@ -25,28 +25,36 @@ def requestTitle( title ):
     # call request using
     response = requests.get("http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=" +
                             title + "&wskey=" + wskey)
+    #print(response)
     return response
 
+def requestBiblio( biblio ):
+    """ Returns the response from the API given the OCLC """
+    # key for permission
+    wskey = "vA6NzAaEVpE2Vt3Yh8Bl6wxJc2CKXCrmupTTEdFt2Ezo0lLqnzX9DxjZzhJnhQWps3VwuieCA8T5orBf"
+    # call request using
+    response = requests.get("http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=" +
+                            biblio + "&wskey=" + wskey)
+    return response
 
 def searchForOCLC( line ):
     """" Uses the other information in the entry to try and return the OCLC,
     if this fails return something that will tell me to write to rejects"""
     title = line[3]
-    request = requestTitle(title)
+    #request = requestTitle(title)
+    request = requestBiblio(line[2])
     if(request.status_code != 200):
-        return 0 # return 0 if the request does not work
+        return (0 ,title) # return 0 if the request does not work
     text = request.text.encode('UTF-8')
-    #print(text)
     oclcStringLocater = "<oclcterms:recordIdentifier>"
     index = text.split(oclcStringLocater, 1)
     if(len(index) > 1):
-        print(len(index))
-        print("  ")
         oclc = index[1][1:-2]
         oclc = oclc.split("<",1)
-        oclc = oclc[0]
+        oclc = (oclc[0],title)
     else:
-        oclc = 0 #return 0 if the oclc is not found
+        #print(requestBiblio(line[2]).text.encode('UTF-8'))
+        oclc = (0,title) #return 0 if the oclc is not found
     return oclc
 
 
@@ -103,6 +111,7 @@ def createRow( OCLC , api_response ):
     return row
 
 def main():
+	
     # load in csv file with OCLC
     input_file = open('sampleInput.csv', 'r')
     csv_input_file = csv.reader(input_file)
@@ -134,10 +143,10 @@ def main():
     for line in csv_input_file:
         OCLC_number = line[1]
         if(OCLC_number == ""):
-            OCLC_number = searchForOCLC(line)
+            (OCLC_number, title) = searchForOCLC(line)
         if(OCLC_number == 0):
-            csv_rejects_writer.writerow([OCLC_number])
-        else:     
+            csv_rejects_writer.writerow([title])
+        else:   
          result = requestOCLC(OCLC_number)
          if(result.status_code == 200): # returns 200 if the request worked
             csv_output_writer.writerow(createRow(OCLC_number, result))

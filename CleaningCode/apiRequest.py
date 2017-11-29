@@ -27,7 +27,7 @@ LANG_LOCATION = 8
 LOCATION_LOCATION = 9
 SUBJECT_LOCATION = 13
 WORKING_STATUS_CODE = 200
-WSKEY = "vA6NzAaEVpE2Vt3Yh8Bl6wxJc2CKXCrmupTTEdFt2Ezo0lLqnzX9DxjZzhJnhQWps3VwuieCA8T5orBf"
+WSKEY = "O8GluIEWJd5raVAqgurXR0OqeJsAFpHK4oaa1nbU2kxeMmA4e6aZhGTMS0FcyH0LjRLCc3uXAFHFO8PU"
 
 def requestOpenSearch( query ):
     """ Returns the response from the API given the title """
@@ -115,18 +115,18 @@ def createRow( oclc_number, line , api_response ):
 
 def main():
     # load in csv file with OCLC
-    input_file = open('sampleInput.csv', 'r')
+    input_file = open('input.csv', 'r')
     csv_input_file = csv.reader(input_file)
 
     # set up output csv file
-    output_file = open('output.csv', 'w')
+    output_file = open('cleaned_data.csv', 'w')
     csv_output_writer = csv.writer(output_file)
     csv_output_writer.writerow(
     ["OCLC", "TITLE", "AUTHORS", "PUB_DATE", "PUBLISHER", "GENRE",
     "SUMMARY", "FORMAT", "RECORD #(BIBLIO)", "CALL #(BIBLIO)",
     "LANG", "LOCATION", "SUBJECT"])
     # set up file to store failed entry requests
-    rejects_file = open('rejects.csv', 'w')
+    rejects_file = open('uncleaned_data.csv', 'w')
     csv_rejects_writer = csv.writer(rejects_file)
     # write the header of the input to the reject file / skip the header line
     csv_rejects_writer.writerow(csv_input_file.next())

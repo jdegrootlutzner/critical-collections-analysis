@@ -3,25 +3,21 @@ from sets import Set
 from marcxml_parser import MARCXMLRecord
 
 """
-TODO:
-    - Questions
-        - What are we going to do if the row does not have an OCLC number?
-            Maybe we could search by title, then get the OCLC num of the first
-            result
-        - What should we do with repeats of books in the current cleaned file?
-            Why are there repeats?
-        -
-    - Jobs related to createRow function
-        - Helper function for authors (parser currently returns as array)
-        - How do we return subject, Sub-subject, and notes? These are all
-            available from API and will be crucial in future text analysis
-        - Helper function for type of entry (book, movie, etc.)
-        - The formats aren't all the same! We might have to parse them more?
+@authors Julian DeGroot-Lutzner & Sydney Smith
+@date Fall 2017
 
-    TODO: Should we make a check to see if the given OCLC number matches up with
-    the given title? For example, what if the given OCLC number is a different
-    book than what is currently stored in the title and author spot.
+This code cleans the original dataset provided by the library. The code iterates
+through each entry in the input file and makes a request based on the OCLC
+number to the WorldCat Search API.
 
+We wrote code to try and find the OCLC number if it was not given to us. The
+functions name is 'searchForOCLC' but it needs more work before we can use it
+confidently. To make it work we need to cross-reference the other fields to see
+if the entry matches the original book in the database. Additionally, some work
+needs to be done to search a substring of a title. For example, the title might
+be messy but if we search a smaller piece of it we could find the right book.
+We may want to also check if the given OCLC number matches with the entry
+described in the original dataset. What if the OCLC number got messed up?
 """
 OCLC_LOCATION = 1
 BIBLIO_LOCATION = 2
@@ -49,7 +45,9 @@ def requestOCLC( OCLC ):
 
 def searchForOCLC( line ):
     """" Uses the other information in the entry to try and return the OCLC.
-    If no OCLC number is found return an OCLC value of '0' """
+    If no OCLC number is found return an OCLC value of '0'.
+    This function is not finished yet because it does not cross-reference the
+    information to see if the book matches the one in the input file """
     request = requestOpenSearch(line[TITLE_LOCATION])
     #request = requestOpenSearch(line[BIBLIO_LOCATION])
     # the Biblio search was not returning anything so I commented it out
@@ -136,10 +134,15 @@ def main():
     # Iterate through each row of the input csv file and write to cor. output
     for line in csv_input_file:         # iterate through each line in the input
         OCLC_number = line[OCLC_LOCATION]               # return the OCLC number
-        if(OCLC_number == ""):                      # if the OCLC field is empty
-            OCLC_number = searchForOCLC(line)              # search for the OCLC
-        if(OCLC_number == "0" or OCLC_number == ""):# if no OCLC number is found
-            csv_rejects_writer.writerow(line)         # write to the reject file
+        if(OCLC_number == ""):
+            csv_rejects_writer.writerow(line)
+        # The OCLC number returned by searching for the title does not match
+        # with the books in the original database. The searchForOCLC needs more
+        # work before we can use it confidently.
+        # if(OCLC_number == ""):                    # if the OCLC field is empty
+        #    OCLC_number = searchForOCLC(line)              # search for the OCLC
+        # if(OCLC_number == "0" or OCLC_number == ""):# if no OCLC number is found
+        #    csv_rejects_writer.writerow(line)         # write to the reject file
         else:                                        # if we have an OCLC number
          result = requestOCLC(OCLC_number)           # request info from the API
          if(result.status_code == WORKING_STATUS_CODE):  # if the request worked
@@ -153,43 +156,4 @@ def main():
     output_file.close()
     rejects_file.close()
 
-
-def test_parsing_calls():
-    ''' This function shows an example of what each highlevel getter returns
-    for the marcxml_parser. Here is the complete API request to see all the
-    information that the worldcat database has available.
-     http://www.worldcat.org/webservices/catalog/content/82671871?wskey=vA6NzAaEVpE2Vt3Yh8Bl6wxJc2CKXCrmupTTEdFt2Ezo0lLqnzX9DxjZzhJnhQWps3VwuieCA8T5orBf
-    As you can see, we still have work to do.
-    '''
-    OCLC = "82671871"
-    request = requestOCLC(OCLC)
-    record = MARCXMLRecord(request)
-    print(record.get_name())
-    print(record.get_subname())
-    print(record.get_price())
-    print(record.get_part())
-    print(record.get_part_name())
-    print(record.get_publisher())
-    print(record.get_pub_date())
-    print(record.get_pub_order())
-    print(record.get_pub_place())
-    print(record.get_format())
-    print(record.get_authors())
-    print(record.get_corporations())
-    print(record.get_distributors())
-    print(record.get_ISBNs())
-    print(record.get_binding())
-    print(record.get_originals())
-
-def testingTitle():
-    sampleLine = ["","","","The unwinding: an inner history of the new America"]
-    searchForOCLC(sampleLine)
-
-def test():
-    text = "yabadaba<oclcterms:recordIdentifier>10<adsfasd"
-    oclcStringLocater = "<oclcterms:recordIdentifier>"
-    text = text.split(oclcStringLocater, 1)
-    print(text[0], text[1])
-    text = text[1].split("<", 1)
-    print(text[0] == "9" or text[0] == "10")
 main()

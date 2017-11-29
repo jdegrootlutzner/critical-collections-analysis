@@ -26,6 +26,10 @@ TODO:
 OCLC_LOCATION = 1
 BIBLIO_LOCATION = 2
 TITLE_LOCATION = 3
+CALL_LOCATION = 7
+LANG_LOCATION = 8
+LOCATION_LOCATION = 9
+SUBJECT_LOCATION = 13
 WORKING_STATUS_CODE = 200
 WSKEY = "vA6NzAaEVpE2Vt3Yh8Bl6wxJc2CKXCrmupTTEdFt2Ezo0lLqnzX9DxjZzhJnhQWps3VwuieCA8T5orBf"
 
@@ -54,9 +58,9 @@ def searchForOCLC( line ):
     text = request.text.encode('UTF-8')
     oclcStringLocater = "<oclcterms:recordIdentifier>"
     text = text.split(oclcStringLocater, 1)
-    if(len(index) == 2):        #if the text split
+    if(len(text) == 2):        #if the text split
         text = text[1].split("<",1)
-        oclc = oclc[0]
+        oclc = text[0]
     else:
         #print(requestBiblio(line[2]).text.encode('UTF-8'))
         oclc = "0" #return 0 if the oclc is not found
@@ -87,13 +91,13 @@ def helper(array):
     author = author.replace(")", ',')
     return author
 
-def createRow( OCLC , api_response ):
+def createRow( line , api_response ):
     ''' Creates a list of book info that will be written to the csv file.
     If there is no relevant information from the category it will return an
     empty spot in the array. '''
     # format: [OCLC, title, authors, pub_date, publisher, genre, summary]
     record = MARCXMLRecord(api_response.text.encode('UTF-8'))
-    row = [OCLC]                                                     # Add OCLC
+    row = [line[OCLC_LOCATION]]                                      # Add OCLC
     row.append(record.get_name())                                   # Add title
     row.append(helper(record.get_authors()))                       # Add authors
     row.append(record.get_pub_date())                      # Add publishing date
@@ -102,6 +106,13 @@ def createRow( OCLC , api_response ):
     "655", "a", i1=" ", i2="7", exception=False)))                  # Add genre
     row.append(helper(record.get_subfields(
     "520", "a", i1=" ", i2=" ", exception=False)))                 # Add summary
+    row.append(record.get_format())                                # Add format
+    # Add fields from original input
+    row.append(line[BIBLIO_LOCATION])
+    row.append(line[CALL_LOCATION])
+    row.append(line[LANG_LOCATION])
+    row.append(line[LOCATION_LOCATION])
+    row.append(line[SUBJECT_LOCATION])
     return row
 
 def main():
@@ -113,12 +124,9 @@ def main():
     output_file = open('output.csv', 'w')
     csv_output_writer = csv.writer(output_file)
     csv_output_writer.writerow(
-    ["OCLC", "TITLE", "AUTHORS", "PUB_DATE", "PUBLISHER", "GENRE", "SUMMARY"])
-    # RECORD #(BIBLIO)      2
-    # CALL #(BIBLIO)        7
-    # LANG                  8
-    # LOCATION              9
-    # SUBJECT               13
+    ["OCLC", "TITLE", "AUTHORS", "PUB_DATE", "PUBLISHER", "GENRE",
+    "SUMMARY", "FORMAT", "RECORD #(BIBLIO)", "CALL #(BIBLIO)",
+    "LANG", "LOCATION", "SUBJECT"])
     # set up file to store failed entry requests
     rejects_file = open('rejects.csv', 'w')
     csv_rejects_writer = csv.writer(rejects_file)
@@ -136,7 +144,7 @@ def main():
          result = requestOCLC(OCLC_number)           # request info from the API
          if(result.status_code == WORKING_STATUS_CODE):  # if the request worked
             csv_output_writer.writerow(
-            createRow(OCLC_number, result))                # write row to output
+            createRow(line, result))                # write row to output
          else:                                      # if the request did not work
             csv_rejects_writer.writerow(line)         # write to the reject file
 
@@ -184,5 +192,4 @@ def test():
     print(text[0], text[1])
     text = text[1].split("<", 1)
     print(text[0] == "9" or text[0] == "10")
-#main()
-test()
+main()

@@ -17,57 +17,54 @@ TODO:
             available from API and will be crucial in future text analysis
         - Helper function for type of entry (book, movie, etc.)
         - The formats aren't all the same! We might have to parse them more?
+
+    TODO: Should we make a check to see if the given OCLC number matches up with
+    the given title? For example, what if the given OCLC number is a different
+    book than what is currently stored in the title and author spot.
+
 """
-def requestTitle( title ):
+OCLC_LOCATION = 1
+BIBLIO_LOCATION = 2
+TITLE_LOCATION = 3
+WORKING_STATUS_CODE = 200
+WSKEY = "vA6NzAaEVpE2Vt3Yh8Bl6wxJc2CKXCrmupTTEdFt2Ezo0lLqnzX9DxjZzhJnhQWps3VwuieCA8T5orBf"
+
+def requestOpenSearch( query ):
     """ Returns the response from the API given the title """
-    # key for permission
-    wskey = "vA6NzAaEVpE2Vt3Yh8Bl6wxJc2CKXCrmupTTEdFt2Ezo0lLqnzX9DxjZzhJnhQWps3VwuieCA8T5orBf"
-    # call request using
-    response = requests.get("http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=" +
-                            title + "&wskey=" + wskey)
-    #print(response)
+    response = requests.get(
+    "http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=" +
+                            query + "&wskey=" + WSKEY)
     return response
-
-def requestBiblio( biblio ):
-    """ Returns the response from the API given the OCLC """
-    # key for permission
-    wskey = "vA6NzAaEVpE2Vt3Yh8Bl6wxJc2CKXCrmupTTEdFt2Ezo0lLqnzX9DxjZzhJnhQWps3VwuieCA8T5orBf"
-    # call request using
-    response = requests.get("http://www.worldcat.org/webservices/catalog/search/worldcat/opensearch?q=" +
-                            biblio + "&wskey=" + wskey)
-    return response
-
-def searchForOCLC( line ):
-    """" Uses the other information in the entry to try and return the OCLC,
-    if this fails return something that will tell me to write to rejects"""
-    title = line[3]
-    #request = requestTitle(title)
-    request = requestBiblio(line[2])
-    if(request.status_code != 200):
-        return (0 ,title) # return 0 if the request does not work
-    text = request.text.encode('UTF-8')
-    oclcStringLocater = "<oclcterms:recordIdentifier>"
-    index = text.split(oclcStringLocater, 1)
-    if(len(index) > 1):
-        oclc = index[1][1:-2]
-        oclc = oclc.split("<",1)
-        oclc = (oclc[0],title)
-    else:
-        #print(requestBiblio(line[2]).text.encode('UTF-8'))
-        oclc = (0,title) #return 0 if the oclc is not found
-    return oclc
-
 
 def requestOCLC( OCLC ):
     """ Returns the response from the API given the OCLC """
-    # key for permission
-    wskey = "vA6NzAaEVpE2Vt3Yh8Bl6wxJc2CKXCrmupTTEdFt2Ezo0lLqnzX9DxjZzhJnhQWps3VwuieCA8T5orBf"
-    # call request using
-    response = requests.get("http://www.worldcat.org/webservices/catalog/content/" +
-                            OCLC + "?wskey=" + wskey)
+    response = requests.get(
+    "http://www.worldcat.org/webservices/catalog/content/" +
+                            OCLC + "?wskey=" + WSKEY)
     return response
 
-def helper(array): #puts author into the correct format for our csv output
+def searchForOCLC( line ):
+    """" Uses the other information in the entry to try and return the OCLC.
+    If no OCLC number is found return an OCLC value of '0' """
+    request = requestOpenSearch(line[TITLE_LOCATION])
+    #request = requestOpenSearch(line[BIBLIO_LOCATION])
+    # the Biblio search was not returning anything so I commented it out
+    if(request.status_code != WORKING_STATUS_CODE):
+        return "0" # return 0 if the request does not work
+    text = request.text.encode('UTF-8')
+    oclcStringLocater = "<oclcterms:recordIdentifier>"
+    text = text.split(oclcStringLocater, 1)
+    if(len(index) == 2):        #if the text split
+        text = text[1].split("<",1)
+        oclc = oclc[0]
+    else:
+        #print(requestBiblio(line[2]).text.encode('UTF-8'))
+        oclc = "0" #return 0 if the oclc is not found
+    return oclc
+
+
+def helper(array):
+    ''' puts author into the correct format for our csv output '''
     text = Set()
     for a in array:
         author = str(a)
@@ -90,68 +87,58 @@ def helper(array): #puts author into the correct format for our csv output
     author = author.replace(")", ',')
     return author
 
-# Possible format for final file
-# OCLC, title, authors, publication date, publisher, type (book, movie, etc.), ISBN (from original document), Subject[s], Sub-subject?,
 def createRow( OCLC , api_response ):
-    ''' Creates a list of book info that will be written to the csv file. If
-    there is no relevant information from the category it should return an
+    ''' Creates a list of book info that will be written to the csv file.
+    If there is no relevant information from the category it will return an
     empty spot in the array. '''
-    # parse api_response
+    # format: [OCLC, title, authors, pub_date, publisher, genre, summary]
     record = MARCXMLRecord(api_response.text.encode('UTF-8'))
-    #print(record)
-    row = [OCLC] #i nitialize list with just OCLC number
-    row.append(record.get_name()) # add title
-    row.append(helper(record.get_authors())) #add authors
-    # TODO: add authors - this needs a helper function bc authors are currently
-    # returned as an array
-    row.append(record.get_pub_date()) # add publishing date
-    row.append(record.get_publisher()) # add publisher
-    row.append(helper(record.get_subfields("655", "a", i1=" ", i2="7", exception=False))) #add genre
-    row.append(helper(record.get_subfields("520", "a", i1=" ", i2=" ", exception=False))) #add summary
+    row = [OCLC]                                                     # Add OCLC
+    row.append(record.get_name())                                   # Add title
+    row.append(helper(record.get_authors()))                       # Add authors
+    row.append(record.get_pub_date())                      # Add publishing date
+    row.append(record.get_publisher())                           # Add publisher
+    row.append(helper(record.get_subfields(
+    "655", "a", i1=" ", i2="7", exception=False)))                  # Add genre
+    row.append(helper(record.get_subfields(
+    "520", "a", i1=" ", i2=" ", exception=False)))                 # Add summary
     return row
 
 def main():
-	
     # load in csv file with OCLC
     input_file = open('sampleInput.csv', 'r')
     csv_input_file = csv.reader(input_file)
-    # TODO: could use 'csv.DictReader' instead of 'csv.reader', then we can call
-    # on data by column name, so by OCLC, ISBN, title, etc.
 
     # set up output csv file
     output_file = open('output.csv', 'w')
     csv_output_writer = csv.writer(output_file)
-
-    # TODO: Add the 'header' to the cvs_output_writer an array of all the titles
-
-    # set up file to store list of OCLCs that failed the API request
+    csv_output_writer.writerow(
+    ["OCLC", "TITLE", "AUTHORS", "PUB_DATE", "PUBLISHER", "GENRE", "SUMMARY"])
+    # RECORD #(BIBLIO)      2
+    # CALL #(BIBLIO)        7
+    # LANG                  8
+    # LOCATION              9
+    # SUBJECT               13
+    # set up file to store failed entry requests
     rejects_file = open('rejects.csv', 'w')
     csv_rejects_writer = csv.writer(rejects_file)
+    # write the header of the input to the reject file / skip the header line
+    csv_rejects_writer.writerow(csv_input_file.next())
 
-    # TODO: Add the 'header' to the cvs_rejects_writer an array of all the titles
-
-    ''' Iterate through each row of the input csv file.
-    TODO: For now I have the input file as just a single column of OCLC numbers,
-    which is called 'sampleOCLC.csv.' In the future we can change it to the
-    complete 'cleaned' CSV file.
-
-    TODO: Should we make a check to see if the given OCLC number matches up with
-    the given title? For example, what if the given OCLC number is a different
-    book than what is currently stored in the title and author spot.
-    '''
-    csv_input_file.next() #skip header
-    for line in csv_input_file:
-        OCLC_number = line[1]
-        if(OCLC_number == ""):
-            (OCLC_number, title) = searchForOCLC(line)
-        if(OCLC_number == 0):
-            csv_rejects_writer.writerow([title])
-        else:   
-         result = requestOCLC(OCLC_number)
-         if(result.status_code == 200): # returns 200 if the request worked
-            csv_output_writer.writerow(createRow(OCLC_number, result))
-         else: # if the request returned a different status message
-            csv_rejects_writer.writerow([OCLC_number])
+    # Iterate through each row of the input csv file and write to cor. output
+    for line in csv_input_file:         # iterate through each line in the input
+        OCLC_number = line[OCLC_LOCATION]               # return the OCLC number
+        if(OCLC_number == ""):                      # if the OCLC field is empty
+            OCLC_number = searchForOCLC(line)              # search for the OCLC
+        if(OCLC_number == "0" or OCLC_number == ""):# if no OCLC number is found
+            csv_rejects_writer.writerow(line)         # write to the reject file
+        else:                                        # if we have an OCLC number
+         result = requestOCLC(OCLC_number)           # request info from the API
+         if(result.status_code == WORKING_STATUS_CODE):  # if the request worked
+            csv_output_writer.writerow(
+            createRow(OCLC_number, result))                # write row to output
+         else:                                      # if the request did not work
+            csv_rejects_writer.writerow(line)         # write to the reject file
 
     # close files
     input_file.close()
@@ -190,4 +177,12 @@ def testingTitle():
     sampleLine = ["","","","The unwinding: an inner history of the new America"]
     searchForOCLC(sampleLine)
 
-main()
+def test():
+    text = "yabadaba<oclcterms:recordIdentifier>10<adsfasd"
+    oclcStringLocater = "<oclcterms:recordIdentifier>"
+    text = text.split(oclcStringLocater, 1)
+    print(text[0], text[1])
+    text = text[1].split("<", 1)
+    print(text[0] == "9" or text[0] == "10")
+#main()
+test()

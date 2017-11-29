@@ -91,13 +91,13 @@ def helper(array):
     author = author.replace(")", ',')
     return author
 
-def createRow( line , api_response ):
+def createRow( oclc_number, line , api_response ):
     ''' Creates a list of book info that will be written to the csv file.
     If there is no relevant information from the category it will return an
     empty spot in the array. '''
     # format: [OCLC, title, authors, pub_date, publisher, genre, summary]
     record = MARCXMLRecord(api_response.text.encode('UTF-8'))
-    row = [line[OCLC_LOCATION]]                                      # Add OCLC
+    row = [oclc_number]                                      # Add OCLC
     row.append(record.get_name())                                   # Add title
     row.append(helper(record.get_authors()))                       # Add authors
     row.append(record.get_pub_date())                      # Add publishing date
@@ -144,8 +144,8 @@ def main():
          result = requestOCLC(OCLC_number)           # request info from the API
          if(result.status_code == WORKING_STATUS_CODE):  # if the request worked
             csv_output_writer.writerow(
-            createRow(line, result))                # write row to output
-         else:                                      # if the request did not work
+            createRow(OCLC_number, line, result))          # write row to output
+         else:                                     # if the request did not work
             csv_rejects_writer.writerow(line)         # write to the reject file
 
     # close files

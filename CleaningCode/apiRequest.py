@@ -89,12 +89,14 @@ def helper(array):
     author = author.replace(")", ',')
     return author
 
-def createRow( oclc_number, line , api_response ):
+def createRow( oclc_number, line , api_response_text ):
     ''' Creates a list of book info that will be written to the csv file.
     If there is no relevant information from the category it will return an
     empty spot in the array. '''
-    # format: [OCLC, title, authors, pub_date, publisher, genre, summary]
-    record = MARCXMLRecord(api_response.text.encode('UTF-8'))
+    # format: ["OCLC", "TITLE", "AUTHORS", "PUB_DATE", "PUBLISHER", "GENRE",
+    #           "SUMMARY", "FORMAT", "RECORD #(BIBLIO)", "CALL #(BIBLIO)",
+    #            "LANG", "LOCATION", "SUBJECT"]
+    record = MARCXMLRecord(api_response_text)
     row = [oclc_number]                                      # Add OCLC
     row.append(record.get_name())                                   # Add title
     row.append(helper(record.get_authors()))                       # Add authors
@@ -115,18 +117,18 @@ def createRow( oclc_number, line , api_response ):
 
 def main():
     # load in csv file with OCLC
-    input_file = open('input.csv', 'r')
+    input_file = open('input4.csv', 'r')
     csv_input_file = csv.reader(input_file)
 
     # set up output csv file
-    output_file = open('cleaned_data.csv', 'w')
+    output_file = open('cleaned_data4.csv', 'w')
     csv_output_writer = csv.writer(output_file)
     csv_output_writer.writerow(
     ["OCLC", "TITLE", "AUTHORS", "PUB_DATE", "PUBLISHER", "GENRE",
     "SUMMARY", "FORMAT", "RECORD #(BIBLIO)", "CALL #(BIBLIO)",
     "LANG", "LOCATION", "SUBJECT"])
     # set up file to store failed entry requests
-    rejects_file = open('uncleaned_data.csv', 'w')
+    rejects_file = open('uncleaned_data4.csv', 'w')
     csv_rejects_writer = csv.writer(rejects_file)
     # write the header of the input to the reject file / skip the header line
     csv_rejects_writer.writerow(csv_input_file.next())
@@ -146,8 +148,12 @@ def main():
         else:                                        # if we have an OCLC number
          result = requestOCLC(OCLC_number)           # request info from the API
          if(result.status_code == WORKING_STATUS_CODE):  # if the request worked
-            csv_output_writer.writerow(
-            createRow(OCLC_number, line, result))          # write row to output
+            text = result.text.encode('UTF-8')
+            if(text.find("<record") >= 0):
+                csv_output_writer.writerow(
+                createRow(OCLC_number, line, text))       # write row to output
+            else:
+                csv_rejects_writer.writerow(line)
          else:                                     # if the request did not work
             csv_rejects_writer.writerow(line)         # write to the reject file
 

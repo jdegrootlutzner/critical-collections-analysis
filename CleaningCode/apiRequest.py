@@ -117,18 +117,18 @@ def createRow( oclc_number, line , api_response_text ):
 
 def main():
     # load in csv file with OCLC
-    input_file = open('input4.csv', 'r')
+    input_file = open('input2.csv', 'r')
     csv_input_file = csv.reader(input_file)
 
     # set up output csv file
-    output_file = open('cleaned_data4.csv', 'w')
+    output_file = open('cleaned_data2.csv', 'w')
     csv_output_writer = csv.writer(output_file)
     csv_output_writer.writerow(
     ["OCLC", "TITLE", "AUTHORS", "PUB_DATE", "PUBLISHER", "GENRE",
     "SUMMARY", "FORMAT", "RECORD #(BIBLIO)", "CALL #(BIBLIO)",
     "LANG", "LOCATION", "SUBJECT"])
     # set up file to store failed entry requests
-    rejects_file = open('uncleaned_data4.csv', 'w')
+    rejects_file = open('uncleaned_data2.csv', 'w')
     csv_rejects_writer = csv.writer(rejects_file)
     # write the header of the input to the reject file / skip the header line
     csv_rejects_writer.writerow(csv_input_file.next())

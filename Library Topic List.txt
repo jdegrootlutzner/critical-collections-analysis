@@ -1,0 +1,48 @@
+Topic: 1
+Word, Frequency
+{text: 'America', count: '30.604'},
+{text: 'story', count: '30.466'},
+{text: 'history', count: '24.09'},
+{text: 'American', count: '22.978'},
+{text: 'age', count: '22.469'},
+{text: 'politic', count: '22.099'},
+{text: 'eat', count: '20.66'},
+{text: 'US', count: '20.324'},
+{text: 'nation', count: '19.643'},
+{text: 'tie', count: '18.723'},
+Topic: 2
+Word, Frequency
+{text: 'story', count: '13.36'},
+{text: 'history', count: '10.604'},
+{text: 'century', count: '9.67'},
+{text: 'aesthetic', count: '9.625'},
+{text: 'mode', count: '9.315'},
+{text: 'German', count: '8.349'},
+{text: 'modern', count: '8.321'},
+{text: 'Germany', count: '6.743'},
+{text: 'eighteen', count: '6.318'},
+{text: 'eighteenth', count: '6.278'},
+Topic: 3
+Word, Frequency
+{text: 'America', count: '14.833'},
+{text: 'century', count: '14.275'},
+{text: 'aesthetic', count: '14.133'},
+{text: 'German', count: '12.726'},
+{text: 'American', count: '11.514'},
+{text: 'Germany', count: '10.271'},
+{text: 'eighteenth', count: '9.558'},
+{text: 'eighteen', count: '9.526'},
+{text: 'Britain', count: '9.215'},
+{text: 'twentieth', count: '6.159'},
+Topic: 4
+Word, Frequency
+{text: 'politic', count: '25.617'},
+{text: 'political', count: '20.131'},
+{text: 'nation', count: '4.874'},
+{text: 'century', count: '4.85'},
+{text: 'politics', count: '4.797'},
+{text: 'govern', count: '4.64'},
+{text: 'German', count: '4.579'},
+{text: 'aesthetic', count: '4.51'},
+{text: 'Germany', count: '3.717'},
+{text: 'tie', count: '3.309'},

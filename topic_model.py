@@ -1,4 +1,4 @@
-
+import math
 import csv
 import re
 import numpy as np
@@ -6,22 +6,20 @@ import matplotlib.pyplot as plt
 
 #Note some of this code was also used by Sydney Smith in her fall 2017 thesis submitted to CMC
 
-def dictionary(subject_list):
-  stopWords = open("stop-word-list.txt").read()
-  unique_words = list(set("".join(subject_list).split(" ")))
+def dictionary(summary_list):
+  stopWords = open("/Users/sydneysmith/cs181/stop-word-list.txt").read()
+  unique_words = list(set("".join(summary_list).split(" ")))
   unique_words =[unique_words for unique_words in unique_words if unique_words not in stopWords]
   return sorted(unique_words)
 
-def wordCount(matrix, paragraphs, unique_words):
-  for x in range(0,(len(paragraphs)-1)):
-    paragraphs[x] = re.sub('\n',' ',paragraphs[x])
-    paragraphs[x] = re.sub('\r',' ',paragraphs[x])
-    paragraphx = paragraphs[x].split()
+def wordCount(result_matrix, summaries, unique_words):
+  for x in range(0,(len(summaries)-1)):
+    summaryx = summaries[x].split()
     for z in range(0,(len(unique_words)-1)):
-      for words in paragraphx:
+      for words in summaryx:
        if unique_words[z] in words:
-        matrix[z,x] = matrix[z,x]+1
-  return matrix
+        result_matrix[z,x] = result_matrix[z,x]+1
+  return result_matrix
 
 def matmult(a,b):
     zip_b = zip(*b)
@@ -62,8 +60,7 @@ def svd(frequency_mtrx, num_topics):
   vnt = V[:num_topics]
   svd_topics_time = matmult((snt),(vnt))
   svd_words_topics = matmult((unt),(snt))
-  svd_topics_time = [0 if i < 0 else i for i in svd_topics_time]
-  [0 if i < 0 else i for i in svd_words_topics]
+  svd_topics_time = [(i*-1) if i < 0 else i for i in svd_topics_time]
   return (svd_words_topics,svd_topics_time)
 
 def plotting(thing_one, title, xlab, ylab):
@@ -76,22 +73,36 @@ def plotting(thing_one, title, xlab, ylab):
 
    
 def main(genre_string, t): #the genre to partion by and the number of topics (t)
-    input_file = open('cleaned_data.csv', 'r')
+    input_file = open('/Users/sydneysmith/cs181/cleaned_data.csv', 'r')
     csv_input_file = csv.reader(input_file)
     csv_input_file.next() #skip header
     subject_matrix = [] #creating a place to store the subject descriptions
+    pub_date_matrix = [] #storing publishing dates
     for line in csv_input_file:
     	genre = line[5]
     	subject = line[6]
+    	date = line[3][:4] #takes in only the first four characters because some have multiple dates or punctuation
+        date = re.sub(' ','',date) #takes out any blank spaces
         if (genre == genre_string):
-          subject = re.sub(r'[^\w\s]','',subject)
-          subject_matrix.append(subject)
+            if (len(date)==4): #throws books out invalid dates 
+             subject = re.sub(r'[^\w\s]','',subject) #removes punctuation
+             subject_matrix.append(subject)
+             pub_date_matrix.append(date)
     unique_words = dictionary(subject_matrix)
     matrix = np.zeros((len(unique_words),len(subject_matrix)))
     X = wordCount(matrix, subject_matrix,unique_words)
     (svd_words_topics,svd_topics_time) = svd(X, t)
     z_svd_words_topics = zip(unique_words,svd_words_topics)
-    topicList(z_svd_words_topics,10,t,True)
-    plotting(svd_topics_time[2],"Topic 3 Over Time", "Publishing Order","Topic Intensity")
+    z_topics_time = zip(pub_date_matrix,svd_topics_time[2])
+    topicList(z_svd_words_topics,15,t,True)
+    x_val = [x[0] for x in z_topics_time]
+    y_val = [x[1] for x in z_topics_time]
+    plt.scatter(x_val,y_val)
+    plt.title("Topic 3 Over Time")
+    plt.xlabel("Publishing Date")
+    plt.ylabel("Topic Intensity")
+    plt.show()
+    print(x_val)
+    print("here")
 
-main("History ", 4)
+main("History ", 10)

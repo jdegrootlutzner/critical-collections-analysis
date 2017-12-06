@@ -22,6 +22,12 @@ def get_basic_statistics(data):
         gc.append(float(genre[1]))
     return gc
 
+def get_gen(data):
+    gen = []
+    for genre in data:
+        gen.append(str(genre[0]))
+    return gen
+
 def calculate_min_and_max(genre):
     return np.min(genre), np.max(genre)
 
@@ -33,30 +39,35 @@ def get_genre(count, min_max, data):
         genre.append(count[0])
     return genre[min_index], genre[max_index]
 
+def create_frequency_dist(index):
+    hist,bin_edges = np.histogram(index,bins=10)
+    return hist,bin_edges
 
+def create_histogram(index):
+    plt.hist(index, facecolor='red', label='Count')
+    plt.title('Count of the entries by Genre')
+    plt.xlabel("Genre")
+    plt.ylabel("Count")
+    plt.legend()
+    plt.show()
+
+def create_bar(index):
+    width = 0.2
+    a=(len(index))
+    ind = np.arange(a)
+    plt.bar(ind, index, width, color='b')
+    plt.xticks(ind, gen, rotation = 90)
+    plt.show()
+    
 data = import_data(my_file)
 seperate_headings_from_data(data)
 gc = get_basic_statistics(data)
+gen = get_gen(data)
 min_max = calculate_min_and_max(gc)
 genre = get_genre(gc,min_max,data)
 print "Genre with the greatest volume in the Claremont Colleges Library: {} at {}".format(
-    (genre)[0], (min_max)[1])
+   (genre)[0], (min_max)[1])
 print "Genre with the smallest volume in the Claremont Colleges Library: {} at {}".format(
     (genre)[1], (min_max)[0])
-gen = []
-tot = []
-a=0
-width = 0.2
-for col in data:
-    gen.append(col[0])
-    tot.append(col[1])
-    a+=1
-
-ind = np.arange(a)
-
-p1 = plt.bar(ind,tot,width,color='r')
-p2 = plt.xticks(ind+width,gen,rotation=90)
-plt.ylabel('Count')
-plt.title('Count of the entries by Genre')
-
-plt.show()
+print create_frequency_dist(gc)
+create_bar(gc)

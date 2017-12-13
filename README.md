@@ -82,6 +82,7 @@ To visualize our topic model we used Mike Bostock's d3 collection to implement w
 ![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/TopicModel.png)
 
 To understand the topic overtime model we created scatter plots using the matlibpy library. An example of this is shown below: 
+
 ![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/TopicTime.png)
 
 ## Background Materials

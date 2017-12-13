@@ -78,7 +78,9 @@ We also looked to take advantage of the book summaries to analyse the bias of th
 
 ## Visualizing the Analysis
 To visualize our topic model we used Mike Bostock's d3 collection to implement word bubble representations of our topics. An example of this is shown below:
-![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/Topic Model.png)
+
+![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/Analysis/Topic Model.png)
+
 To understand the topic overtime model we created scatter plots using the matlibpy library. An example of this is shown below: 
 ![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/Topic Time.png)
 

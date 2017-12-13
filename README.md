@@ -69,7 +69,7 @@ HTML
 
 ## Cleaning the Data 
 In order to clean the data we wrote a python script which called the WorldCat API for each OCLC number, parsered the API response, cleaned the parsed data and returned a CSV file with the accumulated clean data. Since there were many challenges in this, particularly making the API call when there was no available OCLC number we returned the failed attempts a "rejects" CSV file. While our cleaning was effective in standardizing format, including genre information and returing summaries it was less effective when the book was not in english. Below is the basic architure of our cleaning process. 
-![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/cleanedData/Architecture.png)
+![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/CleaningCode/Architecture.png)
 
 ## Analyzing the Data
 To analyse the data we first did... [Julia and Corbin] fill in. 

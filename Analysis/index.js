@@ -16,6 +16,7 @@ $(document).ready(function () {
     //circleColor: use @default
     data: {
       items: [
+        //This data comes from the 2014 topic model
       {text: 'human', count: '13.619'},
       {text: 'right', count: '8.471'},
       {text: 'rights', count: '7.779'},

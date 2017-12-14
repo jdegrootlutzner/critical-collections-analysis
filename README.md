@@ -72,7 +72,12 @@ In order to clean the data we wrote a python script which called the WorldCat AP
 ![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/CleaningCode/Architecture.png)
 
 ## Analyzing the Data
-To analyse the data we first did... [Julia and Corbin] fill in. 
+To analyse the data we first used the matlib library to create bar charts to visualize the amount of listings by genre and by year published. We found that the majority of the Claremont Colleges Library's collection falls under the history genre based on the data pulled from the worldcat API, and the listings were primarily published in the last five years. We beleive the large volume of listings published in the last five years may be due to many new editions of the listings.
+
+![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/Genre Count.png)
+
+![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/Published After 2000.png)
+
 
 We also looked to take advantage of the book summaries to analyse the bias of the library's collecting. In particular, we created a topic model using a bag-of-words apporach and an SVD matrix factorization to analyse the major topics of the collection. We ran code both segmenting the model by genre--with a focus on History, and by year--analyzing books from 2014. These were helpful ways to us to get a sense of the most important topics within the collection. In the future it would interesting to compare our results to that of another collection as differences may better illuminate biases, and also to use exerpts of the books to look closer at the specific language choices. 
 
@@ -81,7 +86,7 @@ To visualize our topic model we used Mike Bostock's d3 collection to implement w
 
 ![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/TopicModel.png)
 
-To understand the topic overtime model we created scatter plots using the matlibpy library. An example of this is shown below: 
+To understand the topic overtime model we created scatter plots using the matlibp library. An example of this is shown below: 
 
 ![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/TopicTime.png)
 

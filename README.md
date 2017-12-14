@@ -20,7 +20,7 @@ Libraries are flexible spaces that allow people to explore an inclusive range of
 Much of Big Data is often the process of cleaning and wrangling data. The library's current dataset is unworkably dirty since it comes from two databases, one of which is outdated. Much of the libraries work on the pilot project involved **manually** cleaning the dataset. We will first clean the dataset by using an API to retrieve clean information about all of the recorded books. We will then quantify the amount of books on a given topic and compare it to the amount of books on the same topic at a different liberal arts college's library. Our high reach goal for this semester is to use text analysis on excerpts of books from a specific topic to analyze the bias, if any, of the collection at the Claremont Colleges Library.
 
 ## Description of Dataset
-<<<<<<< HEAD
+
 OriginalFiles/
 
 ![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/OriginalFiles/original-data-screenshot.png)
@@ -74,9 +74,10 @@ In order to clean the data we wrote a python script which called the WorldCat AP
 ## Analyzing the Data
 To analyse the data we first used the matlib library to create bar charts to visualize the amount of listings by genre and by year published. We found that the majority of the Claremont Colleges Library's collection falls under the history genre based on the data pulled from the worldcat API, and the listings were primarily published in the last five years. We beleive the large volume of listings published in the last five years may be due to many new editions of the listings.
 
-![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/Genre_Count.png)
 
-![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/Published_After_2000.png)
+![alt text](https://github.com/Corbinjb/critical-collections-analysis/blob/master/PublishedAfter2000.png)
+
+![alt text](https://github.com/Corbinjb/critical-collections-analysis/blob/master/GenreCount.png)
 
 
 We also looked to take advantage of the book summaries to analyse the bias of the library's collecting. In particular, we created a topic model using a bag-of-words apporach and an SVD matrix factorization to analyse the major topics of the collection. We ran code both segmenting the model by genre--with a focus on History, and by year--analyzing books from 2014. These were helpful ways to us to get a sense of the most important topics within the collection. In the future it would interesting to compare our results to that of another collection as differences may better illuminate biases, and also to use exerpts of the books to look closer at the specific language choices. 

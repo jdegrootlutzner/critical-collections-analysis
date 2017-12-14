@@ -20,7 +20,7 @@ Libraries are flexible spaces that allow people to explore an inclusive range of
 Much of Big Data is often the process of cleaning and wrangling data. The library's current dataset is unworkably dirty since it comes from two databases, one of which is outdated. Much of the libraries work on the pilot project involved **manually** cleaning the dataset. We will first clean the dataset by using an API to retrieve clean information about all of the recorded books. We will then quantify the amount of books on a given topic and compare it to the amount of books on the same topic at a different liberal arts college's library. Our high reach goal for this semester is to use text analysis on excerpts of books from a specific topic to analyze the bias, if any, of the collection at the Claremont Colleges Library.
 
 ## Description of Dataset
-<<<<<<< HEAD
+
 OriginalFiles/
 
 ![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/OriginalFiles/original-data-screenshot.png)
@@ -73,6 +73,7 @@ In order to clean the data we wrote a python script which called the WorldCat AP
 
 ## Analyzing the Data
 To analyse the data we first used the matlib library to create bar charts to visualize the amount of listings by genre and by year published. We found that the majority of the Claremont Colleges Library's collection falls under the history genre based on the data pulled from the worldcat API, and the listings were primarily published in the last five years. We beleive the large volume of listings published in the last five years may be due to many new editions of the listings.
+
 
 ![alt text](https://github.com/Corbinjb/critical-collections-analysis/blob/master/PublishedAfter2000.png)
 

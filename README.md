@@ -43,7 +43,7 @@ CALL #(BIBLIO)	    - Will assist in finding the book in the API
 
 Other non-important variables are: 'STANDARD #,' 'LANG,' 'LOCATION,' 'MATTYPE,' 'BIBLVL,' 'FY,' 'NOTE,' 'ORD TYPE,' 'VENDOR,' 'Paid Date,' 'Invoice Date,' 'Invoice Num,' 'Amount Paid,' 'Voucher Num,' 'Copies,' 'Sub From,' 'Sub To,' and 'Note'
 
-## Expected Work/Deliverables
+## Original Expected Work
 Our first step will be to clean the dataset. We will use the book record fields from the original dataset to create a new cleaned dataset. We will need to write Java code in order to return the desired information from the API. The API returns XML code so we will need to write code in order to process the information into the format we want.
 
 Our next step will be to analyze the collection from a quantitative perspective. For example, how many books does the library have on a specific topic? How does this compare with how many books another library has on the same topic or all books published on the topic? To do this we will need to write more code to handle the API and return information on topics. We will use R to visualize and interpret the data.
@@ -68,15 +68,15 @@ Javascript
 HTML 
 
 ## Cleaning the Data 
-In order to clean the data we wrote a python script which called the WorldCat API for each OCLC number, parsered the API response, cleaned the parsed data and returned a CSV file with the accumulated clean data. Since there were many challenges in this, particularly making the API call when there was no available OCLC number we returned the failed attempts a "rejects" CSV file. While our cleaning was effective in standardizing format, including genre information and returing summaries it was less effective when the book was not in english. Below is the basic architure of our cleaning process. 
+In order to clean the data we wrote a python script which called the WorldCat API for each OCLC number, parsered the API response, cleaned the parsed data and returned a CSV file with the accumulated clean data. Since there were many challenges in this, particularly making the API call when there was no available OCLC number we returned the failed attempts a "rejects" CSV file. While our cleaning was effective in standardizing format, including genre information and returing summaries it was less effective when the book was not in english. It was not as effective as we hoped it to be but we did learn skills in making API calls, and parsing and cleaning data. Below is the basic architure of our cleaning process. 
 ![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/CleaningCode/Architecture.png)
 
 ## Analyzing the Data
 To analyse the data we first used the matlib library to create bar charts to visualize the amount of listings by genre and by year published. We found that the majority of the Claremont Colleges Library's collection falls under the history genre based on the data pulled from the worldcat API, and the listings were primarily published in the last five years. We beleive the large volume of listings published in the last five years may be due to many new editions of the listings.
 
-![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/Genre_Count.png)
+![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Genre%20Count.png)
 
-![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Analysis/Published_After_2000.png)
+![alt text](https://github.com/jdegrootlutzner/critical-collections-analysis/blob/master/Published%20After%202000.png)
 
 
 We also looked to take advantage of the book summaries to analyse the bias of the library's collecting. In particular, we created a topic model using a bag-of-words apporach and an SVD matrix factorization to analyse the major topics of the collection. We ran code both segmenting the model by genre--with a focus on History, and by year--analyzing books from 2014. These were helpful ways to us to get a sense of the most important topics within the collection. In the future it would interesting to compare our results to that of another collection as differences may better illuminate biases, and also to use exerpts of the books to look closer at the specific language choices. 
